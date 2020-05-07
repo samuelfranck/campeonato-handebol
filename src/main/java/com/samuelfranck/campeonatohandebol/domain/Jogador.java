@@ -3,25 +3,37 @@ package com.samuelfranck.campeonatohandebol.domain;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+@Entity
 public class Jogador implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date dataNascimento;
 	private String genero;
 	private Double altura;
 	private Double peso;
-	
+
+	@ManyToOne
+	@JoinColumn(name = "time_id")
 	private Time timeEmQueJoga;
-	
-	private Time timeQueCapitaneia;
-	
+
 	public Jogador() {
 	}
 
-	public Jogador(Integer id, String nome, Date dataNascimento, String genero, Double altura, Double peso,
-			Time timeEmQueJoga, Time timeQueCapitaneia) {
+	public Jogador(Integer id, String nome, Date dataNascimento, String genero, Double altura, Double peso) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -29,8 +41,7 @@ public class Jogador implements Serializable {
 		this.genero = genero;
 		this.altura = altura;
 		this.peso = peso;
-		this.timeEmQueJoga = timeEmQueJoga;
-		this.timeQueCapitaneia = timeQueCapitaneia;
+
 	}
 
 	public Integer getId() {
@@ -89,14 +100,6 @@ public class Jogador implements Serializable {
 		this.timeEmQueJoga = timeEmQueJoga;
 	}
 
-	public Time getTimeQueCapitaneia() {
-		return timeQueCapitaneia;
-	}
-
-	public void setTimeQueCapitaneia(Time timeQueCapitaneia) {
-		this.timeQueCapitaneia = timeQueCapitaneia;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -121,7 +124,5 @@ public class Jogador implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
 
 }
