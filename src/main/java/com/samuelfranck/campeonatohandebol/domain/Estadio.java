@@ -1,8 +1,6 @@
 package com.samuelfranck.campeonatohandebol.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -10,13 +8,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
-public class Time implements Serializable {
+public class Estadio implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -24,27 +20,24 @@ public class Time implements Serializable {
 	private Integer id;
 	private String nome;
 	
-	@JsonIgnore
-	@OneToOne
-	@JoinColumn(name="capitao_id")
-	private Jogador capitao;
+	@ManyToOne
+	@JoinColumn(name="endereco_id")
+	private Endereco endereco;
 	
-	@JsonIgnore
-	@OneToMany(mappedBy="timeEmQueJoga",cascade = CascadeType.ALL)
-	private List<Jogador> jogadores = new ArrayList<>();
 	
-	@JoinColumn(name="estadio_id")
-	@OneToOne
-	//@MapsId
-	private Estadio sede;
+	@OneToOne(cascade = CascadeType.ALL, mappedBy="sede")
+	private Time time;
 	
-	public Time() {
+	
+	public Estadio() {
 	}
 
-	public Time(Integer id, String nome) {
+	public Estadio(Integer id, Time time, String nome, Endereco endereco) {
 		super();
 		this.id = id;
+		this.time = time;
 		this.nome = nome;
+		this.endereco = endereco;
 	}
 
 	public Integer getId() {
@@ -62,31 +55,23 @@ public class Time implements Serializable {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	
-	public Jogador getCapitao() {
-		return capitao;
+
+	public Endereco getEndereco() {
+		return endereco;
 	}
 
-	public void setCapitao(Jogador capitao) {
-		this.capitao = capitao;
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
 	}
 
-
-	public List<Jogador> getJogadores() {
-		return jogadores;
+	public Time getTime() {
+		return time;
 	}
 
-	public void setJogadores(List<Jogador> jogadores) {
-		this.jogadores = jogadores;
-	}
-	
-	public Estadio getSede() {
-		return sede;
+	public void setTime(Time time) {
+		this.time = time;
 	}
 
-	public void setSede(Estadio sede) {
-		this.sede = sede;
-	}
 
 	@Override
 	public int hashCode() {
@@ -104,7 +89,7 @@ public class Time implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Time other = (Time) obj;
+		Estadio other = (Estadio) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -113,9 +98,9 @@ public class Time implements Serializable {
 		return true;
 	}
 
-	
-
 		
+	
+	
 	
 
 }
